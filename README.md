@@ -1,4 +1,4 @@
-# book-reporter
+# book-reporter-ui
 
 ## Project setup
 ```
