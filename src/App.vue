@@ -4,11 +4,9 @@
       <v-toolbar-title v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg" height="100%">
-      <v-content>
-        <HelloWorld/>
-      </v-content>
-    </v-parallax>
+    <v-content>
+      <HelloWorld/>
+    </v-content>
   </v-app>
 </template>
 
@@ -22,17 +20,7 @@ export default {
   },
   data () {
     return {
-      clipped: false,
-      drawer: true,
-      fixed: false,
-      items: [{
-        icon: 'bubble_chart',
-        title: 'Inspire'
-      }],
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Vuetify.js'
+      title: 'Coming Soon'
     }
   }
 }

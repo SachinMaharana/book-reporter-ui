@@ -12,6 +12,7 @@ import {
   VCard,
   VImg,
   VParallax,
+  VDivider,
   transitions
 } from "vuetify";
 import "vuetify/src/stylus/app.styl";
@@ -29,6 +30,7 @@ Vue.use(Vuetify, {
     transitions,
     VImg,
     VParallax,
+    VDivider,
     VCard
   },
   theme: {
