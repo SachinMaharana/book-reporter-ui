@@ -2,7 +2,7 @@
   <v-container fluid grid-list-lg mt-5 class="container">
     <v-btn color="error" dark large class="button-v" @click="shuffle">Shuffle</v-btn>
     <v-divider class="divider"></v-divider>
-    <v-layout row wrap="">
+    <transition-group name="cards" tag="v-layout" class="manual-v-layout">
       <v-flex v-for="d in books" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
         <v-card flat tile class="elevation-3" height="350px">
           <v-layout row>
@@ -25,7 +25,7 @@
           </v-layout>
         </v-card>
       </v-flex>
-    </v-layout>
+    </transition-group>
   </v-container>
 </template>
 
@@ -56,6 +56,10 @@ export default {
   margin-top: 60px !important;
 }
 
+.cards-move {
+  transition: transform 1s;
+}
+
 .button-v {
   margin-left: 0;
   margin-bottom: 20px;
@@ -63,5 +67,25 @@ export default {
 
 .divider {
   margin-bottom: 20px;
+}
+
+.manual-v-layout {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 8px !important;
+  padding-top: 16px !important;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: lightgray;
 }
 </style>
