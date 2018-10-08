@@ -1,10 +1,10 @@
 <template>
   <v-container fluid grid-list-lg mt-5 class="container">
     <v-btn color="info" dark large class="button-v" @click="shuffle">Shuffle</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="cho('October')">October</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="cho('All')">All</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="cho('November')">November</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="cho('December')">December</v-btn>
+    <v-btn color="info" dark large class="button-v" @click="month('October')">October</v-btn>
+    <v-btn color="info" dark large class="button-v" @click="month('November')">November</v-btn>
+    <v-btn color="info" dark large class="button-v" @click="month('December')">December</v-btn>
+    <v-btn color="info" dark large class="button-v" @click="month('All')">All</v-btn>
     <v-divider class="divider"></v-divider>
     <transition-group name="cards" tag="v-layout" class="manual-v-layout">
       <v-flex v-for="d in filtered" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
@@ -43,44 +43,36 @@ import shuffle from 'lodash.shuffle'
 import books from './result.json'
 export default {
   name: 'HelloWorld',
-  props: {
-    msg: String,
-  },
   data(){
     return {
       books: books.booksData,
-      selected : "All"
+      m: ''
     }
   },
    methods: {
     shuffle() {
       this.books = shuffle(this.books)
     },
-    cho(d) {
-      this.selected = d
-      console.log(this.selected);
+    month(m) {
+      this.m = m
     }
   },
   computed: {
     filtered() {
-      let s = this.selected 
-      switch (s) {
-        case "All":
-          return this.books
-        case "October":
-          console.log("ok");
-          console.log(this.books.filter(m => m.month = s));
-          return this.books.filter(m => m.month = s)
-        case "November":
-          return this.books.filter(m => m.month = s)
-        case "December":
-          return this.books.filter(m => m.month = s)
-        default:
-          break;
+      let mo = this.m
+      if (mo === 'October') {
+        return this.books.filter(m => m.month === mo)
+      }
+      if (mo === 'November') {
+        return this.books.filter(m => m.month === mo)
+      }
+      if (mo === 'December') {
+        return this.books.filter(m => m.month === mo)
+      } else {
+        return this.books
       }
     }
   }
-  
 }
 </script>
 
@@ -97,6 +89,24 @@ export default {
 }
 .cards-move {
   transition: transform 1s;
+}
+
+.cards-enter-active {
+  transition: opacity, transform 200ms ease-in;
+}
+.cards-leave-active {
+  transition: opacity, transform 200ms ease-in;
+}
+.cards-enter-to,
+.cards-leave {
+  opacity: 1;
+  transition: all 1s;
+  /* transform: translateY(10px); */
+}
+.cards-enter, .cards-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transition: all 0.5s;
+  transform: translateY(10px);
 }
 
 .card-title {
