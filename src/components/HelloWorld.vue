@@ -37,18 +37,32 @@
 
 <script>
 import shuffle from 'lodash.shuffle'
+import axios from 'axios'
 import books from './result.json'
+
 export default {
   name: 'HelloWorld',
   data(){
     return {
-      books: books.booksData,
+      books: [],
       m: '',
       page:1,
       length: 4,
       perPage : 12,
-      total: ""
+      total: "",
+      duration: "",
+      monthsAvaiable : [],
+      genres: []
     }
+  },
+
+  created() {
+    this.books = books.booksData
+    this.monthsAvaiable = new Set(this.books.map(b => b.month))
+    let allGenres = this.books.map(b => b.genres[0])
+    let twoDimGenres = allGenres.map(s => s.split(","))
+    let duplicatedGenres = [].concat(...twoDimGenres);
+    this.genres = new Set(duplicatedGenres)
   },
    methods: {
     shuffle() {
@@ -59,34 +73,28 @@ export default {
     }
   },
   computed: {
-    paginatedData(){
-    
-      return this.listData
-               .slice(start, end);
-    },
     filtered() {
       let mo = this.m
       if (mo === 'October') {
         let n =  this.books.filter(m => m.month === mo)
         this.total = n
         this.length = Math.floor(n.length / this.perPage)
-        const start = this.page * this.perPage,
-              end = start + this.perPage;
+        let start = this.page * this.perPage;
+        let end = start + this.perPage;
         return n.slice(start, end)
       }
       if (mo === 'November') {
          let n =  this.books.filter(m => m.month === mo)
         this.total = n
         this.length = Math.floor(n.length / this.perPage)
-       const start = this.page * this.perPage,
-              end = start + this.perPage;
+        let start = this.page * this.perPage;
+        let end = start + this.perPage;
         return n.slice(start, end)
       }
       if (mo === 'December') {
          let n =  this.books.filter(m => m.month === mo)
           this.total = n
           this.length = Math.floor(n.length / this.perPage)
-          console.log(n, this.total, this.length);
           return n
       } else {
         return this.books
@@ -117,10 +125,10 @@ export default {
 }
 
 .cards-enter-active {
-  transition: opacity, transform 200ms;
+  transition: opacity, transform 500ms;
 }
 .cards-leave-active {
-  transition: opacity, transform 200ms;
+  transition: opacity, transform 500ms;
 }
 .cards-enter-to,
 .cards-leave {
@@ -131,7 +139,7 @@ export default {
 .cards-enter, .cards-leave-to /* .list-leave-active below version 2.1.8 */ {
   opacity: 0;
   transition: all 0.5s;
-  transform: translateY(20px);
+  transform: translateY(10px);
 }
 
 .card-title {
