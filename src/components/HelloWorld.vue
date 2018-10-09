@@ -6,9 +6,10 @@
     <v-btn color="info" dark large class="button-v" @click="month('December')">December</v-btn>
     <v-btn color="info" dark large class="button-v" @click="month('All')">All</v-btn>
     <v-divider class="divider"></v-divider>
+    <v-pagination v-model="page" :length="length" circle></v-pagination>
     <transition-group name="cards" tag="v-layout" class="manual-v-layout">
       <v-flex v-for="d in filtered" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
-        <v-card class="elevation-3" height="350px" id="cardss">
+        <v-card class="elevation-3" height="350px" width="95%" pr-0 id="cardss">
           <v-layout row>
             <v-flex xs7>
               <v-card-title primary-title class="card-title">
@@ -20,11 +21,7 @@
               </v-card-title>
             </v-flex>
             <v-flex xs5>
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/halcyon.png"
-                height="125px"
-                contain
-              ></v-img>
+              <v-img src="https://cdn.vuetifyjs.com/images/cards/halcyon.png" height="125px" contain></v-img>
             </v-flex>
           </v-layout>
           <v-layout align-end row>
@@ -46,7 +43,11 @@ export default {
   data(){
     return {
       books: books.booksData,
-      m: ''
+      m: '',
+      page:1,
+      length: 4,
+      perPage : 12,
+      total: ""
     }
   },
    methods: {
@@ -58,19 +59,43 @@ export default {
     }
   },
   computed: {
+    paginatedData(){
+    
+      return this.listData
+               .slice(start, end);
+    },
     filtered() {
       let mo = this.m
       if (mo === 'October') {
-        return this.books.filter(m => m.month === mo)
+        let n =  this.books.filter(m => m.month === mo)
+        this.total = n
+        this.length = Math.floor(n.length / this.perPage)
+        const start = this.page * this.perPage,
+              end = start + this.perPage;
+        return n.slice(start, end)
       }
       if (mo === 'November') {
-        return this.books.filter(m => m.month === mo)
+         let n =  this.books.filter(m => m.month === mo)
+        this.total = n
+        this.length = Math.floor(n.length / this.perPage)
+       const start = this.page * this.perPage,
+              end = start + this.perPage;
+        return n.slice(start, end)
       }
       if (mo === 'December') {
-        return this.books.filter(m => m.month === mo)
+         let n =  this.books.filter(m => m.month === mo)
+          this.total = n
+          this.length = Math.floor(n.length / this.perPage)
+          console.log(n, this.total, this.length);
+          return n
       } else {
         return this.books
       }
+    },
+    pageCount() {
+      let l = this.books.length,
+          s = this.size;
+      return Math.floor(l/s);
     }
   }
 }
@@ -92,21 +117,21 @@ export default {
 }
 
 .cards-enter-active {
-  transition: opacity, transform 200ms ease-in;
+  transition: opacity, transform 200ms;
 }
 .cards-leave-active {
-  transition: opacity, transform 200ms ease-in;
+  transition: opacity, transform 200ms;
 }
 .cards-enter-to,
 .cards-leave {
   opacity: 1;
-  transition: all 1s;
+  transition: all 1.5s;
   /* transform: translateY(10px); */
 }
 .cards-enter, .cards-leave-to /* .list-leave-active below version 2.1.8 */ {
   opacity: 0;
   transition: all 0.5s;
-  transform: translateY(10px);
+  transform: translateY(20px);
 }
 
 .card-title {
