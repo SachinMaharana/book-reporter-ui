@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+    <v-toolbar app color="hsl(210, 50%, 9%)">
+      <v-toolbar-title v-text="title" class="white--text"></v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
-    <v-content>
+    <v-content class="content">
       <HelloWorld />
     </v-content>
   </v-app>
@@ -30,6 +30,10 @@ export default {
 button.v-pagination__item {
   outline: none;
   outline-color: transparent;
+}
+
+.content {
+  background-color: hsl(210, 47%, 19%) !important;
 }
 
 button,

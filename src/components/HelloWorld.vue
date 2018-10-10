@@ -2,7 +2,7 @@
   <v-container fluid grid-list-lg mt-5 class="container">
     <!-- <v-btn color="info" dark large class="button-v" @click="shuffle">Shuffle</v-btn> -->
     <v-flex xs5 sm4 lg4 d-flex mb-5>
-      <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" outline flat></v-select>
+      <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
     </v-flex>
     <v-divider class="divider"></v-divider>
     <div class="text-xs-center mb-4">
@@ -13,7 +13,7 @@
         <v-card class="elevation-3" height="350px" width="95%" pr-0 id="cardss">
           <v-layout row>
             <v-flex xs7>
-              <v-card-title primary-title class="card-title">
+              <v-card-title primary-title class="card-title white--text">
                 <div>
                   <div class="title">{{d.title}}</div>
                   <div>{{d.author}}</div>
@@ -33,7 +33,7 @@
         </v-card>
       </v-flex>
     </transition-group>
-    <v-btn absolute dark fab right bottom color="hsl(42, 100%, 36%)" class="fab-floating" @click="$vuetify.goTo('.v-input__slot')">
+    <v-btn absolute fab right bottom class="fab-floating" @click="$vuetify.goTo('.v-input__slot')">
       <v-icon>arrow_upward</v-icon>
     </v-btn>
   </v-container>
@@ -56,7 +56,8 @@ export default {
       duration: "",
       monthsAvaiable : [],
       genres: [],
-      initialMonth : ""
+      initialMonth : "",
+      show: false
     }
   },
 
@@ -116,7 +117,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
+@import url("https://rsms.me/inter/inter-ui.css");
 .container {
   margin-top: 60px !important;
 }
@@ -125,6 +127,7 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 15px;
+  background-color: rgba(255, 255, 255, 0.12);
 }
 .cards-move {
   transition: transform 1s;
@@ -182,7 +185,7 @@ export default {
   padding-top: 16px !important;
   padding-left: 10px;
   padding-right: 10px;
-  background-color: lightgray;
+  background-color: hsl(210, 49%, 15%);
 }
 
 button.v-pagination__item {
@@ -190,7 +193,31 @@ button.v-pagination__item {
   outline-color: transparent;
 }
 .fab-floating {
-  bottom: 36px;
-  right: 26px;
+  bottom: 36px !important;
+  right: 26px !important;
+  background-color: hsl(42, 100%, 36%) !important;
+  color: black;
+}
+
+.theme--light.v-select .v-select__selections {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: bold;
+}
+
+.theme--light.v-label {
+  color: white;
+  font-weight: bold;
+}
+
+.theme--light.v-messages {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: bold;
+}
+
+.v-chip .v-chip__content {
+  height: 26px;
+}
+.theme--light.v-chip--disabled {
+  color: black;
 }
 </style>
