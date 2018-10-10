@@ -40,80 +40,59 @@
 </template>
 
 <script>
-import shuffle from 'lodash.shuffle'
-import books from './result.json'
+import shuffle from "lodash.shuffle";
+import books from "./result.json";
 
 export default {
-  name: 'HelloWorld',
-  data(){
+  name: "HelloWorld",
+  data() {
     return {
       books: [],
-      monthSelected: '',
-      page:1,
+      monthSelected: "",
+      page: 1,
       length: 4,
-      perPage : 12,
+      perPage: 12,
       total: "",
       duration: "",
-      monthsAvaiable : [],
+      monthsAvaiable: [],
       genres: [],
-      initialMonth : "",
+      initialMonth: "",
       show: false
-    }
+    };
   },
 
   created() {
-    this.books = books.booksData
-    this.monthsAvaiable = [...new Set(this.books.map(b => b.month))]
-    let allGenres = this.books.map(b => b.genres[0]).map(s => s.split(","))
+    this.books = books.booksData;
+    this.monthsAvaiable = [...new Set(this.books.map(b => b.month))];
+    let allGenres = this.books.map(b => b.genres[0]).map(s => s.split(","));
     let duplicatedGenres = [].concat(...allGenres);
-    this.genres = new Set(duplicatedGenres)
+    this.genres = new Set(duplicatedGenres);
   },
   mounted() {
-    this.initialMonth  =this.monthsAvaiable[0]
-   },
-   methods: {
+    this.initialMonth = this.monthsAvaiable[0];
+  },
+  methods: {
     shuffle() {
-      this.books = shuffle(this.books)
+      this.books = shuffle(this.books);
     },
-    calLength(n) {
-      this.length = Math.floor(n / this.perPage)
+    setPaginationlength(n) {
+      this.length = Math.floor(n / this.perPage) + 1;
     },
     month(monthSelected) {
-      this.monthSelected = monthSelected
-    },
+      this.monthSelected = monthSelected;
+    }
   },
   computed: {
     filtered() {
-      let monthSelected = this.monthSelected
-      if (monthSelected === 'October') {
-        let n =  this.books.filter(m => m.month === monthSelected)
-        this.calLength(n.length)
-        let start = this.page * this.perPage;
-        let end = start + this.perPage;
-        return n.slice(start, end)
-      }
-      if (monthSelected === 'November') {
-         let n =  this.books.filter(m => m.month === monthSelected)
-        this.calLength(n.length)
-        let start = this.page * this.perPage;
-        let end = start + this.perPage;
-        return n.slice(start, end)
-      }
-      if (monthSelected === 'December') {
-          let n =  this.books.filter(m => m.month === monthSelected)
-          this.calLength(n.length)
-          return n
-      } else {
-        return this.books
-      }
-    },
-    pageCount() {
-      let l = this.books.length,
-          s = this.size;
-      return Math.floor(l/s);
+      let monthSelected = this.monthSelected;
+      let n = this.books.filter(m => m.month === monthSelected);
+      this.setPaginationlength(n.length);
+      let start = (this.page - 1) * this.perPage;
+      let end = start + this.perPage;
+      return n.slice(start, end);
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
