@@ -232,6 +232,22 @@ button.v-pagination__item {
   font-weight: bold;
 }
 
+#app > div.v-menu__content > div > div {
+  background-color: hsl(210, 47%, 19%) !important;
+}
+
+#app
+  > div.v-menu__content.menuable__content__active
+  > div
+  > div
+  > div
+  a
+  > div
+  > div {
+  color: white;
+  font-weight: bold;
+}
+
 .theme--light.v-messages {
   color: rgba(255, 255, 255, 0.7);
   font-weight: bold;
