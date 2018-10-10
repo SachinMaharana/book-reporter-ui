@@ -1,6 +1,8 @@
 <template>
   <v-container fluid grid-list-lg mt-5 class="container">
-    <!-- <v-btn color="info" dark large class="button-v" @click="shuffle">Shuffle</v-btn> -->
+    <!-- <v-btn color="info" dark large class="button-v" @click="shuffle">Grid</v-btn> -->
+    <v-btn color="info" dark large class="button-v" @click="change('grid')">Grid</v-btn>
+    <v-btn color="info" dark large class="button-v" @click="change('list')">List</v-btn>
     <v-flex xs5 sm4 lg4 d-flex mb-5>
       <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
     </v-flex>
@@ -8,8 +10,21 @@
     <div class="text-xs-center mb-4">
       <v-pagination v-model="page" :length="length" color="success" mb-4 circle></v-pagination>
     </div>
-    <transition-group name="cards" tag="v-layout" class="manual-v-layout">
-      <v-flex v-for="d in filtered" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
+    <transition-group name="cards" tag="v-layout" :class="layout === 'list' ? 'manual-v-layout' :  'manual-v-layout-grid'">
+      <v-flex v-if="layout === 'list'" v-for="d in filtered" :key="d.isbn" xs12 sm12 lg12 md12 mb-3>
+        <v-list>
+          <v-list-tile light three-line>
+            <v-list-tile-content>
+              <v-list-tile-title>{{ d.title }} {{d.author}}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ d.date }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-list-tile-content id="genre-content">
+              <v-chip v-for="(k,i) in d.genres[0].split(',')" :key="i" label="" disabled>{{k}}</v-chip>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-flex>
+      <v-flex v-if="layout === 'grid'" v-for="d in filtered" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
         <v-card class="elevation-3" height="350px" width="95%" pr-0 id="cardss">
           <v-layout row>
             <v-flex xs7>
@@ -57,7 +72,8 @@ export default {
       monthsAvaiable: [],
       genres: [],
       initialMonth: "",
-      show: false
+      show: false,
+      layout: "list"
     };
   },
 
@@ -75,11 +91,15 @@ export default {
     shuffle() {
       this.books = shuffle(this.books);
     },
+    change(t) {
+      this.layout = t;
+    },
     setPaginationlength(n) {
       this.length = Math.floor(n / this.perPage) + 1;
     },
     month(monthSelected) {
       this.monthSelected = monthSelected;
+      this.page = 1;
     }
   },
   computed: {
@@ -159,11 +179,31 @@ export default {
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -ms-flex-direction: row;
-  flex-direction: row;
+  flex-direction: column;
   padding-bottom: 8px !important;
   padding-top: 16px !important;
   padding-left: 10px;
   padding-right: 10px;
+  background-color: hsl(210, 49%, 15%);
+}
+
+.manual-v-layout-grid {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding-bottom: 8px !important;
+  padding-top: 16px !important;
+  padding-left: 30px;
+  padding-right: 30px;
   background-color: hsl(210, 49%, 15%);
 }
 
@@ -198,5 +238,10 @@ button.v-pagination__item {
 }
 .theme--light.v-chip--disabled {
   color: black;
+}
+
+#genre-content {
+  flex-direction: row;
+  justify-content: flex-end;
 }
 </style>
