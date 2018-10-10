@@ -33,7 +33,7 @@
         </v-card>
       </v-flex>
     </transition-group>
-    <v-btn absolute dark fab right bottom color="red" class="fab-floating" @click="$vuetify.goTo('.v-input__slot')">
+    <v-btn absolute dark fab right bottom color="hsl(42, 100%, 36%)" class="fab-floating" @click="$vuetify.goTo('.v-input__slot')">
       <v-icon>arrow_upward</v-icon>
     </v-btn>
   </v-container>
@@ -74,6 +74,9 @@ export default {
     shuffle() {
       this.books = shuffle(this.books)
     },
+    calLength(n) {
+      this.length = Math.floor(n / this.perPage)
+    },
     month(monthSelected) {
       this.monthSelected = monthSelected
     },
@@ -83,21 +86,21 @@ export default {
       let monthSelected = this.monthSelected
       if (monthSelected === 'October') {
         let n =  this.books.filter(m => m.month === monthSelected)
-        this.length = Math.floor(n.length / this.perPage)
+        this.calLength(n.length)
         let start = this.page * this.perPage;
         let end = start + this.perPage;
         return n.slice(start, end)
       }
       if (monthSelected === 'November') {
          let n =  this.books.filter(m => m.month === monthSelected)
-        this.length = Math.floor(n.length / this.perPage)
+        this.calLength(n.length)
         let start = this.page * this.perPage;
         let end = start + this.perPage;
         return n.slice(start, end)
       }
       if (monthSelected === 'December') {
           let n =  this.books.filter(m => m.month === monthSelected)
-          this.length = Math.floor(n.length / this.perPage)
+          this.calLength(n.length)
           return n
       } else {
         return this.books
