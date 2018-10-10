@@ -1,11 +1,15 @@
 <template>
   <v-container fluid grid-list-lg mt-5 class="container">
     <!-- <v-btn color="info" dark large class="button-v" @click="shuffle">Grid</v-btn> -->
-    <v-btn color="info" dark large class="button-v" @click="change('grid')">Grid</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="change('list')">List</v-btn>
-    <v-flex xs5 sm4 lg4 d-flex mb-5>
-      <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
-    </v-flex>
+    <v-layout row mb-4>
+      <v-flex xs-6>
+        <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
+      </v-flex>
+      <v-flex xs-6 class="view">
+        <v-btn color="info" dark large class="button-v" @click="change('grid')">Grid</v-btn>
+        <v-btn color="info" dark large class="button-v" @click="change('list')">List</v-btn>
+      </v-flex>
+    </v-layout>
     <v-divider class="divider"></v-divider>
     <div class="text-xs-center mb-4">
       <v-pagination v-model="page" :length="length" color="success" mb-4 circle></v-pagination>
@@ -241,6 +245,12 @@ button.v-pagination__item {
 }
 
 #genre-content {
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.view {
+  display: flex;
   flex-direction: row;
   justify-content: flex-end;
 }
