@@ -27,6 +27,9 @@ export default {
 </script>
 
 <style>
+#app {
+  font-family: "Inter UI";
+}
 button.v-pagination__item {
   outline: none;
   outline-color: transparent;
