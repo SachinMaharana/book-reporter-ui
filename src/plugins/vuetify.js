@@ -15,7 +15,9 @@ import {
   VDivider,
   VChip,
   transitions,
-  VPagination
+  VPagination,
+  VSelect,
+  VMenu,
 } from "vuetify";
 import "vuetify/src/stylus/app.styl";
 
@@ -35,7 +37,9 @@ Vue.use(Vuetify, {
     VDivider,
     VCard,
     VChip,
-    VPagination
+    VMenu,
+    VPagination,
+    VSelect
   },
   theme: {
     primary: "#ee44aa",

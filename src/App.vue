@@ -5,7 +5,7 @@
       <v-spacer></v-spacer>
     </v-toolbar>
     <v-content>
-      <HelloWorld/>
+      <HelloWorld />
     </v-content>
   </v-app>
 </template>
@@ -25,3 +25,17 @@ export default {
   }
 }
 </script>
+
+<style>
+button.v-pagination__item {
+  outline: none;
+  outline-color: transparent;
+}
+
+button,
+li {
+  outline: none;
+  outline-color: transparent;
+}
+</style>
+

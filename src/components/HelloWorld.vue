@@ -1,12 +1,13 @@
 <template>
   <v-container fluid grid-list-lg mt-5 class="container">
-    <v-btn color="info" dark large class="button-v" @click="shuffle">Shuffle</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="month('October')">October</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="month('November')">November</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="month('December')">December</v-btn>
-    <v-btn color="info" dark large class="button-v" @click="month('All')">All</v-btn>
+    <!-- <v-btn color="info" dark large class="button-v" @click="shuffle">Shuffle</v-btn> -->
+    <v-flex xs5 sm4 lg4 d-flex mb-5>
+      <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" outline flat></v-select>
+    </v-flex>
     <v-divider class="divider"></v-divider>
-    <v-pagination v-model="page" :length="length" circle></v-pagination>
+    <div class="text-xs-center mb-4">
+      <v-pagination v-model="page" :length="length" color="success" mb-4 circle></v-pagination>
+    </div>
     <transition-group name="cards" tag="v-layout" class="manual-v-layout">
       <v-flex v-for="d in filtered" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
         <v-card class="elevation-3" height="350px" width="95%" pr-0 id="cardss">
@@ -32,12 +33,14 @@
         </v-card>
       </v-flex>
     </transition-group>
+    <v-btn absolute dark fab right bottom color="red" class="fab-floating" @click="$vuetify.goTo('.v-input__slot')">
+      <v-icon>arrow_upward</v-icon>
+    </v-btn>
   </v-container>
 </template>
 
 <script>
 import shuffle from 'lodash.shuffle'
-import axios from 'axios'
 import books from './result.json'
 
 export default {
@@ -45,55 +48,55 @@ export default {
   data(){
     return {
       books: [],
-      m: '',
+      monthSelected: '',
       page:1,
       length: 4,
       perPage : 12,
       total: "",
       duration: "",
       monthsAvaiable : [],
-      genres: []
+      genres: [],
+      initialMonth : ""
     }
   },
 
   created() {
     this.books = books.booksData
-    this.monthsAvaiable = new Set(this.books.map(b => b.month))
-    let allGenres = this.books.map(b => b.genres[0])
-    let twoDimGenres = allGenres.map(s => s.split(","))
-    let duplicatedGenres = [].concat(...twoDimGenres);
+    this.monthsAvaiable = [...new Set(this.books.map(b => b.month))]
+    let allGenres = this.books.map(b => b.genres[0]).map(s => s.split(","))
+    let duplicatedGenres = [].concat(...allGenres);
     this.genres = new Set(duplicatedGenres)
   },
+  mounted() {
+    this.initialMonth  =this.monthsAvaiable[0]
+   },
    methods: {
     shuffle() {
       this.books = shuffle(this.books)
     },
-    month(m) {
-      this.m = m
-    }
+    month(monthSelected) {
+      this.monthSelected = monthSelected
+    },
   },
   computed: {
     filtered() {
-      let mo = this.m
-      if (mo === 'October') {
-        let n =  this.books.filter(m => m.month === mo)
-        this.total = n
+      let monthSelected = this.monthSelected
+      if (monthSelected === 'October') {
+        let n =  this.books.filter(m => m.month === monthSelected)
         this.length = Math.floor(n.length / this.perPage)
         let start = this.page * this.perPage;
         let end = start + this.perPage;
         return n.slice(start, end)
       }
-      if (mo === 'November') {
-         let n =  this.books.filter(m => m.month === mo)
-        this.total = n
+      if (monthSelected === 'November') {
+         let n =  this.books.filter(m => m.month === monthSelected)
         this.length = Math.floor(n.length / this.perPage)
         let start = this.page * this.perPage;
         let end = start + this.perPage;
         return n.slice(start, end)
       }
-      if (mo === 'December') {
-         let n =  this.books.filter(m => m.month === mo)
-          this.total = n
+      if (monthSelected === 'December') {
+          let n =  this.books.filter(m => m.month === monthSelected)
           this.length = Math.floor(n.length / this.perPage)
           return n
       } else {
@@ -155,6 +158,10 @@ export default {
   margin-bottom: 20px;
 }
 
+.v-pagination li button {
+  outline: none;
+}
+
 .manual-v-layout {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -173,5 +180,14 @@ export default {
   padding-left: 10px;
   padding-right: 10px;
   background-color: lightgray;
+}
+
+button.v-pagination__item {
+  outline: none;
+  outline-color: transparent;
+}
+.fab-floating {
+  bottom: 36px;
+  right: 26px;
 }
 </style>
