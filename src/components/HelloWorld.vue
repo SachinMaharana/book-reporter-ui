@@ -4,6 +4,8 @@
     <v-layout row mb-4>
       <v-flex xs-6>
         <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
+
+        <v-select :items="genres" v-model="genreSelected" color="success" label="Genres" v-on:change="genreFunc" persistent-hint hint="Filter By Genre" background-color="white" outline flat id="select"></v-select>
       </v-flex>
       <v-flex xs-6 class="view">
         <v-btn color="rgb(11, 23, 34)" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
@@ -27,7 +29,7 @@
               <v-list-tile-sub-title>{{ d.date }}</v-list-tile-sub-title>
             </v-list-tile-content>
             <v-list-tile-content id="genre-content">
-              <v-chip v-for="(k,i) in d.genres[0].split(',')" :key="i" label="" disabled>{{k}}</v-chip>
+              <v-chip v-for="(k,i) in d.genres" :key="i" label="" disabled>{{k}}</v-chip>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -50,7 +52,7 @@
           </v-layout>
           <v-layout align-end row>
             <v-flex xs12>
-              <v-chip v-for="(k,i) in d.genres[0].split(',')" :key="i" label="" disabled>{{k}}</v-chip>
+              <v-chip v-for="(k,i) in d.genres" :key="i" label="" disabled>{{k}}</v-chip>
             </v-flex>
           </v-layout>
         </v-card>
@@ -82,18 +84,22 @@ export default {
       initialMonth: "",
       show: false,
       layout: "list",
-      gridSelected: false
+      gridSelected: false,
+      initialGenre: "",
+      genreSelected: ""
     };
   },
 
-  created() {
-    this.books = books.booksData;
-    this.monthsAvaiable = [...new Set(this.books.map(b => b.month))];
-    let allGenres = this.books.map(b => b.genres[0]).map(s => s.split(","));
-    let duplicatedGenres = [].concat(...allGenres);
-    this.genres = new Set(duplicatedGenres);
-  },
+  created() {},
   mounted() {
+    this.books = books.booksData.map(b => {
+      b.genres = b.genres[0].split(",").map(c => c.trim());
+      return b;
+    });
+    this.monthsAvaiable = [...new Set(this.books.map(b => b.month))];
+    let allGenres = this.books.map(b => b.genres);
+    let duplicatedGenres = [].concat(...allGenres);
+    this.genres = [...new Set(duplicatedGenres)];
     this.initialMonth = this.monthsAvaiable[0];
   },
   methods: {
@@ -109,20 +115,26 @@ export default {
     },
     month(monthSelected) {
       this.monthSelected = monthSelected;
+      this.genreSelected = "";
       this.page = 1;
+    },
+    genreFunc(g) {
+      this.genreSelected = g;
     }
-    // getData(i) {
-    //   console.log(i);
-    // }
   },
   computed: {
     filtered() {
       let monthSelected = this.monthSelected;
-      let n = this.books.filter(m => m.month === monthSelected);
-      this.setPaginationlength(n.length);
+      let selectedMonthBooks = this.books.filter(
+        m => m.month === monthSelected
+      );
+      if (this.genreSelected) {
+        console.log(this.genreSelected);
+      }
+      this.setPaginationlength(selectedMonthBooks.length);
       let start = (this.page - 1) * this.perPage;
       let end = start + this.perPage;
-      return n.slice(start, end);
+      return selectedMonthBooks.slice(start, end);
     }
   }
 };
