@@ -99,7 +99,11 @@ export default {
     this.monthsAvaiable = [...new Set(this.books.map(b => b.month))];
     let allGenres = this.books.map(b => b.genres);
     let duplicatedGenres = [].concat(...allGenres);
-    this.genres = [...new Set(duplicatedGenres)];
+    this.genres = [...new Set(duplicatedGenres)].sort(function(a, b) {
+      if (a < b) return -1;
+      else if (a > b) return 1;
+      return 0;
+    });
     this.initialMonth = this.monthsAvaiable[0];
   },
   methods: {
@@ -120,6 +124,7 @@ export default {
     },
     genreFunc(g) {
       this.genreSelected = g;
+      this.page = 1;
     }
   },
   computed: {
@@ -128,8 +133,16 @@ export default {
       let selectedMonthBooks = this.books.filter(
         m => m.month === monthSelected
       );
+      // console.log(selectedMonthBooks);
       if (this.genreSelected) {
-        console.log(this.genreSelected);
+        selectedMonthBooks = selectedMonthBooks.filter(b => {
+          let bg = new Set(b.genres);
+          if (bg.has(this.genreSelected)) {
+            return true;
+          } else {
+            return false;
+          }
+        });
       }
       this.setPaginationlength(selectedMonthBooks.length);
       let start = (this.page - 1) * this.perPage;
