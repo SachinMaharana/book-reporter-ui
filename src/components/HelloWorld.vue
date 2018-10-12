@@ -2,10 +2,10 @@
   <v-container fluid grid-list-lg mt-5 class="container">
     <!-- <v-btn color="info" dark large class="button-v" @click="shuffle">Grid</v-btn> -->
     <v-layout row mb-4>
-      <v-flex xs-6>
+      <v-flex xs-6 class="selectflex">
         <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
 
-        <v-select :items="genres" v-model="genreSelected" color="success" label="Genres" v-on:change="genreFunc" persistent-hint hint="Filter By Genre" background-color="white" outline flat id="select"></v-select>
+        <v-select :items="genres" v-model="genreSelected" color="success" label="Genres" v-on:change="genreFunc" persistent-hint hint="Filter By Genre" background-color="white" outline flat id="select" multiple chips clearable deletable-chips></v-select>
       </v-flex>
       <v-flex xs-6 class="view">
         <v-btn color="rgb(11, 23, 34)" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
@@ -58,7 +58,7 @@
         </v-card>
       </v-flex>
     </transition-group>
-    <v-btn absolute fab right bottom class="fab-floating" @click="$vuetify.goTo('.v-input__slot')">
+    <v-btn absolute fab right bottom class="fab-floating" @click="$vuetify.goTo('#select')">
       <v-icon>arrow_upward</v-icon>
     </v-btn>
   </v-container>
@@ -86,7 +86,7 @@ export default {
       layout: "list",
       gridSelected: false,
       initialGenre: "",
-      genreSelected: ""
+      genreSelected: []
     };
   },
 
@@ -119,7 +119,7 @@ export default {
     },
     month(monthSelected) {
       this.monthSelected = monthSelected;
-      this.genreSelected = "";
+      this.genreSelected = [];
       this.page = 1;
     },
     genreFunc(g) {
@@ -134,14 +134,10 @@ export default {
         m => m.month === monthSelected
       );
       // console.log(selectedMonthBooks);
-      if (this.genreSelected) {
+      if (this.genreSelected.length !== 0) {
         selectedMonthBooks = selectedMonthBooks.filter(b => {
-          let bg = new Set(b.genres);
-          if (bg.has(this.genreSelected)) {
-            return true;
-          } else {
-            return false;
-          }
+          let bg = b.genres;
+          return bg.some(v => this.genreSelected.includes(v));
         });
       }
       this.setPaginationlength(selectedMonthBooks.length);
@@ -258,7 +254,9 @@ button.v-pagination__item {
   background-color: hsl(42, 100%, 36%) !important;
   color: black;
 }
-
+.selectflex {
+  width: 50%;
+}
 .theme--light.v-select .v-select__selections {
   color: rgba(255, 255, 255, 0.7);
   font-weight: bold;
