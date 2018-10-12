@@ -17,6 +17,7 @@ import {
   transitions,
   VPagination,
   VSelect,
+  VDialog,
   VMenu,
 } from "vuetify";
 import "vuetify/src/stylus/app.styl";
@@ -39,6 +40,7 @@ Vue.use(Vuetify, {
     VChip,
     VMenu,
     VPagination,
+    VDialog,
     VSelect
   },
   theme: {

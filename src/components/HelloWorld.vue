@@ -6,16 +6,20 @@
         <v-select :items="monthsAvaiable" v-model="initialMonth" color="success" label="Months" v-on:change="month" persistent-hint hint="Filter By Month" background-color="white" outline flat id="select"></v-select>
       </v-flex>
       <v-flex xs-6 class="view">
-        <v-btn color="info" dark large class="button-v" @click="change('grid')">Grid</v-btn>
-        <v-btn color="info" dark large class="button-v" @click="change('list')">List</v-btn>
+        <v-btn color="rgb(11, 23, 34)" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
+          <v-icon medium>view_module</v-icon>
+        </v-btn>
+        <v-btn color="rgb(11, 23, 34)" flat icon class="button-v" @click="change('list')" :class="!this.gridSelected ? 'btnBack' : ''">
+          <v-icon medium>view_list</v-icon>
+        </v-btn>
       </v-flex>
     </v-layout>
     <v-divider class="divider"></v-divider>
     <div class="text-xs-center mb-4">
-      <v-pagination v-model="page" :length="length" color="success" mb-4 circle></v-pagination>
+      <v-pagination v-model="page" :total-visible="12" :length="length" color="success" mb-4 circle></v-pagination>
     </div>
     <transition-group name="cards" tag="v-layout" :class="layout === 'list' ? 'manual-v-layout' :  'manual-v-layout-grid'">
-      <v-flex v-if="layout === 'list'" v-for="d in filtered" :key="d.isbn" xs12 sm12 lg12 md12 mb-3>
+      <v-flex v-if="layout === 'list'" v-for="d in filtered" :key="d.isbn" xs12 sm12 lg12 md12 mb-0>
         <v-list>
           <v-list-tile light three-line>
             <v-list-tile-content>
@@ -77,7 +81,8 @@ export default {
       genres: [],
       initialMonth: "",
       show: false,
-      layout: "list"
+      layout: "list",
+      gridSelected: false
     };
   },
 
@@ -97,6 +102,7 @@ export default {
     },
     change(t) {
       this.layout = t;
+      this.gridSelected = !this.gridSelected;
     },
     setPaginationlength(n) {
       this.length = Math.floor(n / this.perPage) + 1;
@@ -105,6 +111,9 @@ export default {
       this.monthSelected = monthSelected;
       this.page = 1;
     }
+    // getData(i) {
+    //   console.log(i);
+    // }
   },
   computed: {
     filtered() {
@@ -136,6 +145,9 @@ export default {
   transition: transform 1s;
 }
 
+.btnBack {
+  background-color: hsl(210, 49%, 15%);
+}
 .cards-enter-active {
   transition: opacity, transform 500ms;
 }
@@ -269,5 +281,6 @@ button.v-pagination__item {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
 }
 </style>
