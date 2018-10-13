@@ -18,12 +18,12 @@
     </v-layout>
     <v-divider class="divider"></v-divider>
     <div class="text-xs-center mb-4">
-      <v-pagination v-model="page" :total-visible="12" :length="length" color="success" mb-4 circle></v-pagination>
+      <v-pagination v-model="page" :length="length" color="success" mb-4 circle></v-pagination>
     </div>
     <transition-group name="cards" tag="v-layout" :class="layout === 'list' ? 'manual-v-layout' :  'manual-v-layout-grid'">
       <v-flex v-if="layout === 'list'" v-for="d in filtered" :key="d.isbn" xs12 sm12 lg12 md12 mb-0>
         <v-list>
-          <v-list-tile light three-line>
+          <v-list-tile three-line id="list">
             <v-list-tile-content>
               <v-list-tile-title>{{ d.title }} {{d.author}}</v-list-tile-title>
               <v-list-tile-sub-title>{{ d.date }}</v-list-tile-sub-title>
@@ -160,7 +160,9 @@ export default {
   display: flex;
   flex-direction: column;
   padding: 15px;
-  background-color: rgba(255, 255, 255, 0.12);
+  /* background-color: rgba(255, 255, 255, 0.12); */
+  /* background-color: rgba(255, 255, 255, 0.12); */
+  background-color: rgba(16, 0, 0, 0.12);
 }
 .cards-move {
   transition: transform 1s;
@@ -305,5 +307,20 @@ button.v-pagination__item {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+}
+
+.theme--light.v-list {
+  background: rgba(16, 0, 0, 0.12) !important;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.theme--light.v-list .v-list__tile__sub-title {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.theme--light.v-icon {
+  color: #fff;
 }
 </style>
