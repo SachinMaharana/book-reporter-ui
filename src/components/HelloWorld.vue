@@ -8,10 +8,10 @@
         <v-select :items="genres" v-model="genreSelected" color="success" label="Genres" v-on:change="genreFunc" persistent-hint hint="Filter By Genre" background-color="white" outline flat id="select" multiple chips clearable deletable-chips></v-select>
       </v-flex>
       <v-flex xs-6 class="view">
-        <v-btn color="#f5f5f5" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
+        <v-btn color="#f5f5f5" title="Grid View" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
           <v-icon medium>view_module</v-icon>
         </v-btn>
-        <v-btn color="#f5f5f5" flat icon class="button-v" @click="change('list')" :class="!this.gridSelected ? 'btnBack' : ''">
+        <v-btn color="#f5f5f5" title="List View" flat icon class="button-v" @click="change('list')" :class="!this.gridSelected ? 'btnBack' : ''">
           <v-icon medium>view_list</v-icon>
         </v-btn>
       </v-flex>
@@ -23,39 +23,43 @@
     <transition-group name="cards" tag="v-layout" :class="layout === 'list' ? 'manual-v-layout' :  'manual-v-layout-grid'">
       <v-flex v-if="layout === 'list'" v-for="d in filtered" :key="d.isbn" xs12 sm12 lg12 md12 mb-0>
         <v-list>
-          <v-list-tile three-line id="list">
-            <v-list-tile-content>
-              <v-list-tile-title>{{ d.title }} {{d.author}}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ d.date }}</v-list-tile-sub-title>
-            </v-list-tile-content>
-            <v-list-tile-content id="genre-content">
-              <v-chip v-for="(k,i) in d.genres" :key="i" label="" disabled>{{k}}</v-chip>
-            </v-list-tile-content>
-          </v-list-tile>
+          <v-hover>
+            <v-list-tile title="Go To Goodreads" three-line id="list" :href="gerHref(d.isbn)" target="_blank" slot-scope="{ hover }" :class="`elevation-${hover ? 14 : 1}`">
+              <v-list-tile-content>
+                <v-list-tile-title>{{ d.title }} {{d.author}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ d.date }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+              <v-list-tile-content id="genre-content">
+                <v-chip v-for="(k,i) in d.genres" :key="i" label="" disabled>{{k}}</v-chip>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-hover>
         </v-list>
       </v-flex>
       <v-flex v-if="layout === 'grid'" v-for="d in filtered" :key="d.isbn" xs12 sm6 md4 lg4 mb-3>
-        <v-card class="elevation-3" height="350px" width="95%" pr-0 id="cardss">
-          <v-layout row>
-            <v-flex xs7>
-              <v-card-title primary-title class="card-title white--text">
-                <div>
-                  <div class="title">{{d.title}}</div>
-                  <div>{{d.author}}</div>
-                  <div>{{d.date}}</div>
-                </div>
-              </v-card-title>
-            </v-flex>
-            <v-flex xs5>
-              <v-img src="https://cdn.vuetifyjs.com/images/cards/halcyon.png" height="125px" contain></v-img>
-            </v-flex>
-          </v-layout>
-          <v-layout align-end row>
-            <v-flex xs12>
-              <v-chip v-for="(k,i) in d.genres" :key="i" label="" disabled>{{k}}</v-chip>
-            </v-flex>
-          </v-layout>
-        </v-card>
+        <v-hover>
+          <v-card title="Go To Goodreads" class="elevation-3" height="350px" width="95%" pr-0 id="cardss" :href="gerHref(d.isbn)" target="_blank" slot-scope="{ hover }" :class="`elevation-${hover ? 14 : 1}`">
+            <v-layout row>
+              <v-flex xs7>
+                <v-card-title primary-title class=" card-title white--text">
+                  <div>
+                    <div class="title">{{d.title}}</div>
+                    <div>{{d.author}}</div>
+                    <div>{{d.date}}</div>
+                  </div>
+                </v-card-title>
+              </v-flex>
+              <v-flex xs5>
+                <v-img src="https://cdn.vuetifyjs.com/images/cards/halcyon.png" height="125px" contain></v-img>
+              </v-flex>
+            </v-layout>
+            <v-layout align-end row>
+              <v-flex xs12>
+                <v-chip v-for="(k,i) in d.genres" :key="i" label="" disabled>{{k}}</v-chip>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-hover>
       </v-flex>
     </transition-group>
     <v-btn absolute fab right bottom class="fab-floating" @click="$vuetify.goTo('#select')">
@@ -125,6 +129,10 @@ export default {
     genreFunc(g) {
       this.genreSelected = g;
       this.page = 1;
+    },
+    gerHref(isbn) {
+      let ib = isbn.trim();
+      return `https://www.goodreads.com/book/isbn/${ib}`;
     }
   },
   computed: {

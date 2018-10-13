@@ -19,6 +19,7 @@ import {
   VSelect,
   VDialog,
   VMenu,
+  VHover
 } from "vuetify";
 import "vuetify/src/stylus/app.styl";
 
@@ -41,7 +42,9 @@ Vue.use(Vuetify, {
     VMenu,
     VPagination,
     VDialog,
-    VSelect
+    VSelect,
+    VHover
+
   },
   theme: {
     primary: "#ee44aa",
