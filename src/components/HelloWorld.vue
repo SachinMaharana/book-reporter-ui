@@ -8,10 +8,10 @@
         <v-select :items="genres" v-model="genreSelected" color="success" label="Genres" v-on:change="genreFunc" persistent-hint hint="Filter By Genre" background-color="white" outline flat id="select" multiple chips clearable deletable-chips></v-select>
       </v-flex>
       <v-flex xs-6 class="view">
-        <v-btn color="rgb(11, 23, 34)" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
+        <v-btn color="#f5f5f5" flat icon class="button-v" @click="change('grid')" :class="this.gridSelected ? 'btnBack' : ''">
           <v-icon medium>view_module</v-icon>
         </v-btn>
-        <v-btn color="rgb(11, 23, 34)" flat icon class="button-v" @click="change('list')" :class="!this.gridSelected ? 'btnBack' : ''">
+        <v-btn color="#f5f5f5" flat icon class="button-v" @click="change('list')" :class="!this.gridSelected ? 'btnBack' : ''">
           <v-icon medium>view_list</v-icon>
         </v-btn>
       </v-flex>
