@@ -257,7 +257,7 @@ button.v-pagination__item {
   color: black;
 }
 .selectflex {
-  width: 50%;
+  max-width: 60%;
 }
 .theme--light.v-select .v-select__selections {
   color: rgba(255, 255, 255, 0.7);
