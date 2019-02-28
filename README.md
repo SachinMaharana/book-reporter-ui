@@ -1,5 +1,8 @@
 # book-reporter-ui
 
+LIVE: https://stoic-wiles-b9d207.netlify.com
+SCRAPER: https://github.com/SachinMaharana/book-reporter-scraper
+
 ## Project setup
 
 ```
@@ -24,4 +27,4 @@ yarn run build
 yarn run lint
 ```
 
-https://stoic-wiles-b9d207.netlify.com
+
